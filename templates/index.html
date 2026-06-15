@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Vulnerability Manager</title>
+        <link rel="stylesheet" href="/static/css/styles.css">
+    </head>
+    <body>
+        <div id="app">
+            <aside id="sidebar">
+                <div id="side-header">
+                    <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
+                        <path d="M16 3L4 8v8c0 6.6 5.1 12.8 12 14.3C22.9 28.8 28 22.6 28 16V8L16 3z" stroke="#8b5cf6" stroke-width="1.5" stroke-linejoin="round"/>
+                        <path d="M11 16l3 3 7-7" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div>
+                        <h1>Vuln<span>Manager</span></h1>
+                        <p>Vulnerability Management System</p>
+                    </div>
+                </div>
+
+                <nav id="nav-views">
+                    <button class="view-btn active" data-view="dashboard">
+                        <svg width="14" height="14" viewBox="0 0 32 32" fill="none">
+                            <rect x="3" y="3" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                            <rect x="18" y="3" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                            <rect x="3" y="18" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                            <rect x="18" y="18" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        Dashboard
+                    </button>
+                    <button class="view-btn" data-view="list">
+                        <svg width="14" height="14" viewBox="0 0 32 32" fill="none">
+                            <line x1="4" y1="8" x2="28" y2="8" stroke="currentColor" stroke-width="1.5"/>
+                            <line x1="4" y1="16" x2="28" y2="16" stroke="currentColor" stroke-width="1.5"/>
+                            <line x1="4" y1="24" x2="28" y2="24" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        List
+                    </button>
+                    <button class="view-btn" data-view="add">
+                        <svg width="14" height="14" viewBox="0 0 32 32" fill="none">
+                            <circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.5"/>
+                            <line x1="16" y1="10" x2="16" y2="22" stroke="currentColor" stroke-width="1.5"/>
+                            <line x1="10" y1="16" x2="22" y2="16" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        Add Vulnerability
+                    </button>
+                </nav>
+
+                <div id="side-footer">
+                    <button id="export-pdf-btn">
+                        <svg width="14" height=14 viewBox="0 0 32 32" fill="none">
+                            <path d="M6 4h1216 6v18H6z" stroke="currentColor" stroke-width="1.5"/>
+                            <polyline point="18,4 18,10 24,10" stroke="currentColor" stroke-width="1.5"/>
+                            <line x1="10" y1="18" x2="22" y2="18" stroke="currentColor" stroke-width="1"/>
+                            <line x1="10" y1="22" x2="22" y2="22" stroke="currentColor" stroke-width="1"/>
+                        </svg>
+                        Export PDF
+                    </button>
+                </div>
+            </aside>
+
+            <main id="main-content">
+
+                <section id="dashboard-view" class="active view">
+                    <div id="resume-cards">
+                        <div class="resume-card" id="resume-total">
+                            <span class="resume-number" id="num-total">0</span>
+                            <span class="resume-label">Total Vulnerabilities</span>
+                        </div>
+                        <div class="resume-card critical" id="resume-critical">
+                            <span class="resume-number" id="num-critical">0</span>
+                            <span class="resume-label">Critical Vulnerabilities</span>
+                        </div>
+                        <div class="resume-card high" id="resume-high">
+                            <span class="resume-number" id="num-high">0</span>
+                            <span class="resume-label">High Vulnerabilities</span>
+                        </div>
+                        <div class="resume-card medium" id="resume-medium">
+                            <span class="resume-number" id="num-medium">0</span>
+                            <span class="resume-label">Medium Vulnerabilities</span>
+                        </div>
+                        <div class="resume-card low" id="resume-low">
+                            <span class="resume-number" id="num-low">0</span>
+                            <span class="resume-label">Low Vulnerabilities</span>
+                        </div>
+                        <div class="resume-card" id="resume-cvss">
+                            <span class="resume-number" id="num-cvss">0</span>
+                            <span class="resume-label">Average CVSS Score</span>
+                        </div>
+                    </div>
+
+                    <div id="graphics-wrap">
+                        <div class="graphic-panel" id="status-panel">
+                            <h3>By Status</h3>
+                            <div id="graphic-status"></div>
+                        </div>
+                        <div class="graphic-panel" id="category-panel">
+                            <h3>By Category</h3>
+                            <div id="graphic-category"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="list-view" class="view">
+                    <div id="filters-wrap">
+                        <input type="text" id="entry-search" placeholder="search CVE, title, description..." autocomplete="off" spellcheck="false"/>
+                        <select id="severity-filter">
+                            <option value="">All Severities</option>
+                            <option value="critical">Critical</option>
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                        <select id="status-filter">
+                            <option value="">All Statuses</option>
+                            <option value="pending">Pending</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="mitigated">Mitigated</option>
+                            <option value="accepted">Accepted</option>
+                        </select>
+                        <select id="category-filter">
+                            <option value="">All Categories</option>
+                            <option value="injection">Injection</option>
+                            <option value="xss">XSS</option>
+                            <option value="authentication">Authentication</option>
+                            <option value="exposure">Exposure of Data</option>
+                            <option value="configuration">Bad Configuration</option>
+                            <option value="network">Network</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div id="table-wrap">
+                        <table id="vulnerability-table">
+                            <thead>
+                                <tr>
+                                    <th>CVE</th>
+                                    <th>Title</th>
+                                    <th>Severity</th>
+                                    <th>CVSS Score</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="add-view" class="view">
+                    <div id="form-wrap">
+                        <h2 id="title-form">Register vulnerability</h2>
+
+                        <div id="grid-form">
+                            <div class="field">
+                                <label>CVE ID</label>
+                                <input type="text" id="cve-field" placeholder="CVE-2026-XXXXX" autocomplete="off"/>
+                            </div>
+                            <div class="field wide-field">
+                                <label>Title <span class="required">*</span></label>
+                                <input type="text" id="title-field" placeholder="Descriptive name of vulnerability" autocomplete="off"/>
+                            </div>
+                            <div class="field">
+                                <label>Severity <span class="required">*</span></label>
+                                <select id="severity-field">
+                                    <option value="">Select Severity</option>
+                                    <option value="critical">Critical</option>
+                                    <option value="high">High</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </div>
+
+                            <div class="field">
+                                <label>CVSS Score</label>
+                                <input type="number" id="score-field" placeholder="0.0 - 10.0" min="0" max="10" step="0.1"/>
+                            </div>
+                            <div class="field">
+                                <label>Category</label>
+                                <select id="category-field">
+                                    <option value="">Select Category</option>
+                                    <option value="injection">Injection</option>
+                                    <option value="xss">XSS</option>
+                                    <option value="authentication">Authentication</option>
+                                    <option value="exposure">Exposure of Data</option>
+                                    <option value="configuration">Bad Configuration</option>
+                                    <option value="network">Network</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="field">
+                                <label>System</label>
+                                <input type="text" id="system-field" placeholder="Affected system or host" autocomplete="off" />
+                            </div>
+
+                            <div class="field wide-field">
+                                <label>Description</label>
+                                <textarea id="description-field" placeholder="Describe the vulnerability details..." rows="3"></textarea>
+                            </div>
+                            <div class="field">
+                                <label>Status</label>
+                                <select id="status-field">
+                                    <option value="pending">Pending</option>
+                                    <option value="in_progress">In Progress</option>
+                                    <option value="mitigated">Mitigated</option>
+                                    <option value="accepted">Accepted</option>
+                                </select>
+                            </div>
+
+                            <div class="field">
+                                <label>Date of Discovery</label>
+                                <input type="date" id="date-field">
+                            </div>
+                            <div class="field wide-field">
+                                <label>Notes / Mitigation</label>
+                                <textarea id="notes-field" placeholder="Steps to mitigate, references, observations..." rows="3"></textarea>
+                            </div>
+                        </div>
+
+                        <div id="actions-form">
+                            <button id="save-btn" class="save-btn">Save</button>
+                            <button id="cancel-btn" class="cancel-btn">Cancel</button>
+                        </div>
+
+                        <div id="msg-form" class="hidden"></div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <script src="/static/main.js"></script>
+    </body>
+</html>
