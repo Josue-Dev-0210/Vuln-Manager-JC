@@ -15,7 +15,15 @@ A lightweight vulnerability management platform built with Flask and SQLite for 
 * PDF report generation
 * SQLite database integration
 * REST API endpoints
-* 
+
+
+# PREVIEW
+<img width="1914" height="853" alt="VULN_MANAGER1" src="https://github.com/user-attachments/assets/c7d1159e-68da-4b37-9fba-3ee5f7f0f5ae" />
+
+<img width="1914" height="853" alt="VULN-MANAGER2" src="https://github.com/user-attachments/assets/48d99e18-9fc1-45fe-9912-6e76440cd328" />
+
+<img width="1914" height="853" alt="VULN-MANAGER3" src="https://github.com/user-attachments/assets/432744ad-97b1-4b96-ace9-b446fae7cb83" />
+
 # Tech Stack
 
 # Backend
